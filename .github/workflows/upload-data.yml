@@ -1,0 +1,44 @@
+name: Scrape and Upload
+
+on:
+  schedule:
+    - cron: "*/1 * * * *"  # every minute
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install pandas datadotworld
+
+      - name: Scrape data
+        run: python scrape.py
+
+      - name: Aggregate hourly
+        if: ${{ github.event.schedule == '0 * * * *' }}
+        run: python aggregate.py
+
+      - name: Upload to data.world
+        env:
+          DW_AUTH_TOKEN: ${{ secrets.DATA_WORLD_API_TOKEN }}
+        run: |
+          python -c "
+import datadotworld as dw
+import pandas as pd
+
+df = pd.read_csv('data/hourly_agg.csv')
+dw.append_rows(
+    dataset_key='youruser/poc-endpoint-history',
+    table_name='hourly_status',
+    data=df,
+    format='pandas'
+)
+"
