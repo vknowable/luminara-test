@@ -2,7 +2,7 @@ name: Scrape and Upload
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # every 10 minutes
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,6 @@ jobs:
         run: python scripts/scrape.py
 
       - name: Aggregate hourly
-        # if: ${{ github.event.schedule == '0 * * * *' }}
         run: python scripts/aggregate.py
 
       - name: Upload to data.world
