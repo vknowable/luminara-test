@@ -29,16 +29,4 @@ jobs:
       - name: Upload to data.world
         env:
           DW_AUTH_TOKEN: ${{ secrets.DATA_WORLD_API_TOKEN }}
-        run: |
-          python -c "
-import datadotworld as dw
-import pandas as pd
-
-df = pd.read_csv('data/hourly_agg.csv')
-dw.append_rows(
-    dataset_key='youruser/poc-endpoint-history',
-    table_name='hourly_status',
-    data=df,
-    format='pandas'
-)
-"
+        run: python scripts/upload.py
