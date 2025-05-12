@@ -2,7 +2,7 @@ name: Scrape and Upload
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # every minute
+    - cron: "*/10 * * * *"  # every 10 minutes
   workflow_dispatch:
 
 jobs:
