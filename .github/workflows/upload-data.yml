@@ -20,11 +20,11 @@ jobs:
         run: pip install pandas datadotworld
 
       - name: Scrape data
-        run: python scrape.py
+        run: python scripts/scrape.py
 
       - name: Aggregate hourly
         if: ${{ github.event.schedule == '0 * * * *' }}
-        run: python aggregate.py
+        run: python scripts/aggregate.py
 
       - name: Upload to data.world
         env:
