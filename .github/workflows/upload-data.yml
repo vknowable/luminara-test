@@ -23,7 +23,7 @@ jobs:
         run: python scripts/scrape.py
 
       - name: Aggregate hourly
-        #if: ${{ github.event.schedule == '0 * * * *' }}
+        if: ${{ github.event.schedule == '0 * * * *' }}
         run: python scripts/aggregate.py
 
       - name: Upload to data.world
